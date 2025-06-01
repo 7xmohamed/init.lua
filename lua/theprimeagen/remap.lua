@@ -1,81 +1,94 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.g.maplocalleader = " "
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+local keymap = vim.keymap
 
-vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
+-- 🔁 Raccourcis inspirés de VSCode (AZERTY-friendly)
+keymap.set({ "n", "v" }, "<C-y>", '"+y')         -- Copier (comme Ctrl+C)
+keymap.set({ "n", "v" }, "<C-x>", '"+d')         -- Couper
+keymap.set({ "n", "v" }, "<C-v>", '"+p')         -- Coller
+keymap.set("i", "<C-v>", '<C-r>+')               -- Coller en mode insert
 
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("n", "=ap", "ma=ap'a")
-vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
+-- 🖱️ Tout sélectionner sans toucher au terminal
+keymap.set("n", "<C-a>", "ggVG")                 -- Tout sélectionner
+keymap.set("i", "<C-a>", "<Esc>ggVG")            -- En mode insert
 
-vim.keymap.set("n", "<leader>vwm", function()
-    require("vim-with-me").StartVimWithMe()
-end)
-vim.keymap.set("n", "<leader>svwm", function()
-    require("vim-with-me").StopVimWithMe()
-end)
+-- 🗂️ Explorer les fichiers (mode Ex)
+keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
 
--- greatest remap ever
-vim.keymap.set("x", "<leader>p", [["_dP]])
 
--- next greatest remap ever : asbjornHaland
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+-- 🔁 Remonter/descendre des lignes sélectionnées
+keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
+-- 📜 Scrolling centré
+keymap.set("n", "J", "mzJ`z")
+keymap.set("n", "<C-d>", "<C-d>zz")
+keymap.set("n", "<C-u>", "<C-u>zz")
+keymap.set("n", "n", "nzzzv")
+keymap.set("n", "N", "Nzzzv")
 
--- This is going to get me cancelled
-vim.keymap.set("i", "<C-c>", "<Esc>")
-
-vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", function()
+-- ✅ Formater avec conform.nvim
+keymap.set("n", "<leader>f", function()
     require("conform").format({ bufnr = 0 })
 end)
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- 🔃 Redémarrer LSP
+keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+-- 📋 Yank simplifié (système ou noir)
+keymap.set("x", "<leader>p", [["_dP]])
+keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+keymap.set("n", "<leader>Y", [["+Y]])
+keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
-vim.keymap.set(
-    "n",
-    "<leader>ee",
-    "oif err != nil {<CR>}<Esc>Oreturn err<Esc>"
-)
+-- 🔄 Remplacer mot sous curseur dans tout le fichier
+keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set(
-    "n",
-    "<leader>ea",
-    "oassert.NoError(err, \"\")<Esc>F\";a"
-)
+-- ⛏️ Rendre fichier exécutable
+keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-vim.keymap.set(
-    "n",
-    "<leader>ef",
-    "oif err != nil {<CR>}<Esc>Olog.Fatalf(\"error: %s\\n\", err.Error())<Esc>jj"
-)
-
-vim.keymap.set(
-    "n",
-    "<leader>el",
-    "oif err != nil {<CR>}<Esc>O.logger.Error(\"error\", \"error\", err)<Esc>F.;i"
-)
-
-vim.keymap.set("n", "<leader>ca", function()
+-- 🔥 Animation Cellular Automaton
+keymap.set("n", "<leader>ca", function()
     require("cellular-automaton").start_animation("make_it_rain")
 end)
 
-vim.keymap.set("n", "<leader><leader>", function()
+-- 🔁 Sourcing rapide
+keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+-- ❌ Fermer Q (mode Ex)
+keymap.set("n", "Q", "<nop>")
+
+-- 🧪 Tests
+keymap.set("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
+
+-- 📄 Gestion erreurs / quickfix
+keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+
+-- 🔍 Recherche fichiers comme VSCode (Telescope)
+keymap.set("n", "<C-p>", "<cmd>Telescope find_files<CR>", { desc = "Telescope: Rechercher fichier" })
+keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Telescope: Grep dans projet" })
+keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope: Fichiers ouverts" })
+
+-- 🧭 Naviguer entre buffers (fichiers ouverts)
+keymap.set("n", "<TAB>", ":bnext<CR>")
+keymap.set("n", "<S-TAB>", ":bprevious<CR>")
+
+-- 👥 Vim With Me
+keymap.set("n", "<leader>vwm", function()
+    require("vim-with-me").StartVimWithMe()
+end)
+keymap.set("n", "<leader>svwm", function()
+    require("vim-with-me").StopVimWithMe()
+end)
+
+-- 📁 Ouvrir / fermer l'explorateur de fichiers
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle File Explorer" })
+
 
