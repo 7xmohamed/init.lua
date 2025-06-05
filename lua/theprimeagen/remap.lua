@@ -92,3 +92,24 @@ end)
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle File Explorer" })
 
 
+-- ✨ Sélection rapide en mode INSERT (comme VSCode)
+local opts = { noremap = true, silent = true }
+
+-- Sélection mot à gauche (Ctrl+Shift+←)
+vim.keymap.set("i", "<C-S-Left>", "<Esc>vb", opts)
+
+-- Sélection mot à droite (Ctrl+Shift+→)
+vim.keymap.set("i", "<C-S-Right>", "<Esc>ve", opts)
+
+-- Sélection ligne au-dessus (Ctrl+Shift+↑)
+vim.keymap.set("i", "<C-S-Up>", "<Esc>kV", opts)
+
+-- Sélection ligne en dessous (Ctrl+Shift+↓)
+vim.keymap.set("i", "<C-S-Down>", "<Esc>jV", opts)
+
+
+-- Save file with Ctrl+S in normal and insert mode
+vim.keymap.set({'n', 'i'}, '<C-s>', '<Esc>:w<CR>', { desc = "Save file" })
+
+
+
